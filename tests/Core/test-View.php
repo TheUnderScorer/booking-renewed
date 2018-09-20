@@ -14,9 +14,9 @@ final class ViewTest extends TestCase {
 
         $view = Core()->view;
 
-        $output = $view->render( 'test', [ 'name' => 'Przemek' ] );
+        $output = $view->renderAppContainer( 'app_test' );
 
-        $this->assertEquals( 'Hello Przemek', trim( $output ) );
+        $this->assertContains( 'app_test', $output );
 
     }
 

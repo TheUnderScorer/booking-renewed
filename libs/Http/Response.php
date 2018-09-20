@@ -33,7 +33,7 @@ class Response {
     /** @var bool True if there was error with submission (empty required fields etc.) */
     protected $error = false;
 
-    /** @var array Array of arrays with messages and their target (html element, popup or alert) */
+    /** @var array Array of arrays with messages */
     protected $messages = [];
 
     /** @var array Contains additional data, useful for debuging. */
@@ -42,24 +42,22 @@ class Response {
     /** @var string Additional url that user will be redirected after ajax call */
     protected $redirectUrl = '';
 
-    /** @var array Result that can be used for something in frontend */
-    protected $result = [];
+    /** @var mixed Result of request */
+    protected $result = false;
 
     /**
      * Add error to response
      *
      * @param string $message Error message
-     * @param string $target Message target (html element ID, popup or alert)
      * @param bool   $send Whenever send response after adding error.
      *
      * @return self
      */
-    public function addError( string $message, string $target = 'alert', bool $send = false ): self {
+    public function addError( string $message, bool $send = false ): self {
 
         $this->error      = true;
         $this->messages[] = [
             'message' => $message,
-            'target'  => $target,
             'type'    => self::ERROR,
         ];
 
@@ -88,16 +86,14 @@ class Response {
      * Add message to response
      *
      * @param string $message Error message
-     * @param string $target Message target (html element ID, popup, alert or submit)
      * @param int    $type Message type (error|notice|message|success)
      *
      * @return self
      */
-    public function addMessage( string $message, string $target = 'alert', int $type = self::MESSAGE ): self {
+    public function addMessage( string $message, int $type = self::MESSAGE ): self {
 
         $this->messages[] = [
             'message' => $message,
-            'target'  => $target,
             'type'    => $type,
         ];
 
@@ -113,7 +109,7 @@ class Response {
      *
      * @return self
      */
-    public function addAdditionalData( $key, $data ): selfŁ {
+    public function addAdditionalData( $key, $data ): self {
 
         $this->additional[ $key ] = $data;
 
@@ -130,17 +126,8 @@ class Response {
      */
     public function handleWpError( \WP_Error $error ): self {
 
-        foreach ( $error->get_error_messages() as $error_message ) {
-            if ( Strings::contains( $error_message, 'password' ) ) {
-                $target = '#password';
-            } else if ( Strings::contains( $error_message, 'login' ) || Utility::contains( $error_message, 'sername' ) ) {
-                $target = '#login';
-            } else if ( Strings::contains( $error_message, 'mail' ) ) {
-                $target = '#email';
-            } else {
-                $target = 'popup-error';
-            }
-            $this->addError( $error_message, $target );
+        foreach ( $error->get_error_messages() as $errorMessage ) {
+            $this->addError( $errorMessage );
         }
 
         return $this;
@@ -150,16 +137,15 @@ class Response {
     /**
      * Check if provided user is campaign author
      *
-     * @param User   $user
-     * @param Post   $post
-     * @param string $errorTarget
+     * @param User $user
+     * @param Post $post
      *
      * @return void
      */
-    public function validateAuthor( User $user, Post $post, string $errorTarget = 'alert' ) {
+    public function validateAuthor( User $user, Post $post ) {
 
         if ( $user->ID != $post->post_author ) {
-            $this->addError( esc_html__( 'You can\'t do that', 'wpbr' ), $errorTarget, true );
+            $this->addError( esc_html__( 'You can\'t do that', 'wpbr' ), true );
         }
 
     }
@@ -191,29 +177,27 @@ class Response {
     /**
      * @param string $action
      * @param string $queryParam
-     * @param string $target
      *
      * @return void
      */
-    public function checkNonce( string $action, string $queryParam, string $target = 'alert' ) {
+    public function checkNonce( string $action, string $queryParam ) {
 
         if ( ! check_ajax_referer( $action, $queryParam, false ) ) {
-            $this->addError( 'Security error', $target, true );
+            $this->addError( 'Security error', true );
         }
 
     }
 
     /**
-     * @param string $target
      *
      * @return void
      */
-    public function checkUserLoggedIn( string $target = 'alert' ) {
+    public function checkUserLoggedIn() {
 
         if ( ! is_user_logged_in() ) {
 
             if ( request()->isAjax() ) {
-                $this->addError( esc_html__( 'You must be logged in to do that', 'wpbr' ), $target, true );
+                $this->addError( esc_html__( 'You must be logged in to do that', 'wpbr' ), true );
             } else {
                 $this->render404();
             }
@@ -230,45 +214,6 @@ class Response {
         wp_redirect( $this->redirectUrl, $status );
 
         die();
-    }
-
-    /**
-     * @param string $viewPath
-     * @param array  $data
-     *
-     * @return void
-     */
-    public function render( string $viewPath, array $data = [] ) {
-        echo Core()->view->render( $viewPath, $data );
-    }
-
-    /**
-     * Renders 404 content with partials and stops script execution
-     *
-     * @return void
-     */
-    public function render404() {
-        $this->renderWithPartials( '404' );
-
-        die();
-    }
-
-    /**
-     * Renders with footer and header partials
-     *
-     * @param string $viewPath
-     * @param array  $data
-     *
-     * @return void
-     */
-    public function renderWithPartials( string $viewPath, array $data = [] ) {
-
-        get_header();
-
-        $this->render( $viewPath, $data );
-
-        get_footer();
-
     }
 
     /**

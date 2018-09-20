@@ -1,8 +1,7 @@
 import { CHANGE_SETTINGS_PAGE } from '../actions/types';
 
 const InitialState = {
-    page: 'general',
-    vars: wpbr_admin_settings_vars,
+    page: window.location.hash ? window.location.hash.replace( '#', '' ) : 'general',
 };
 
 export default function( state = InitialState, action ) {
@@ -13,7 +12,7 @@ export default function( state = InitialState, action ) {
 
             return {
                 ...state,
-                ...action
+                ...action.payload
             };
 
         default:

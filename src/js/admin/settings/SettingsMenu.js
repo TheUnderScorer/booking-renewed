@@ -6,7 +6,7 @@ import Typography from '@material-ui/core/Typography';
 import Toolbar from '@material-ui/core/Toolbar';
 import { changeSettingsPage } from '../../actions/adminSettingsActions';
 import Drawer from '@material-ui/core/Drawer';
-import General from './General';
+import General from './sections/General';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
@@ -14,7 +14,11 @@ import ListItemText from '@material-ui/core/ListItemText';
 import SettingsIcon from '@material-ui/icons/Settings';
 import CalendarIcon from '@material-ui/icons/CalendarToday';
 import IntegrationsIcon from '@material-ui/icons/LibraryAdd';
+import PaymentIcon from '@material-ui/icons/Payment';
 import './scss/settings-menu.scss';
+import Calendar from './sections/Calendar';
+import Payment from './sections/Payment';
+import Integrations from './sections/Integrations';
 
 class SettingsMenu extends Component {
 
@@ -65,6 +69,7 @@ class SettingsMenu extends Component {
         return [
             renderList( 'general', <SettingsIcon/> ),
             renderList( 'calendar', <CalendarIcon/> ),
+            renderList( 'payment', <PaymentIcon/> ),
             renderList( 'integrations', <IntegrationsIcon/> )
         ]
     }
@@ -77,6 +82,18 @@ class SettingsMenu extends Component {
 
             case 'general':
                 component = (<General/>);
+                break;
+
+            case 'calendar':
+                component = (<Calendar/>);
+                break;
+
+            case 'payment':
+                component = (<Payment/>);
+                break;
+
+            case 'integrations':
+                component = (<Integrations/>);
                 break;
 
         }

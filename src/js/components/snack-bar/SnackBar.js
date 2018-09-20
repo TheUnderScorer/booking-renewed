@@ -77,7 +77,7 @@ class SnackBar extends Component {
             <Snackbar
                 anchorOrigin={{
                     vertical:   'bottom',
-                    horizontal: 'left',
+                    horizontal: 'right',
                 }}
                 open={open}
                 autoHideDuration={6000}

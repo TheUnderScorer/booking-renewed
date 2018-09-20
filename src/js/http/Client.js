@@ -1,30 +1,24 @@
 import axios from 'axios';
+import { Vars } from '../constants/vars';
 
 export default class Client {
 
-    constructor( url ) {
+    static axios = axios.create( {
+        baseURL: Vars.ajaxUrl,
+        withCredentials: true
+    } );
 
-        this.axios = axios.create( {
-            baseURL:         url,
-            headers:         {
-                'Content-Type': 'application/json'
-            },
-            withCredentials: true
-        } )
-
+    /**
+     * @return {Promise}
+     * */
+    static post( data = {} ) {
+        return this.axios.post( '/', new URLSearchParams( data ) );
     }
 
     /**
      * @return {Promise}
      * */
-    post( data ) {
-        return this.axios.post( '/', data );
-    }
-
-    /**
-     * @return {Promise}
-     * */
-    get( query = {} ) {
+    static get( query = {} ) {
 
         let queryString = '?';
 

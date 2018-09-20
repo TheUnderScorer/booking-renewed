@@ -3,7 +3,7 @@
 namespace WPBR\App;
 
 Core()->settings->defineDefaults( [
-    'slotLengths'   => '15 mins',
-    'cancelLengths' => '15 mins',
+    'slotLength'   => '15 mins',
+    'cancellationLimit' => '15 mins',
     'defaultStatus' => 'pending',
 ] );

@@ -15,6 +15,7 @@ namespace WPBR\App;
 use WPBR\App\Storage\Instances;
 
 define( 'WPBR_DIR', plugin_dir_path( __FILE__ ) );
+define( 'WPBR_DIR_INCLUDES', WPBR_DIR . 'includes/' );
 
 require_once WPBR_DIR . 'includes/http.php';
 require_once WPBR_DIR . 'vendor/autoload.php';
@@ -24,9 +25,11 @@ require_once WPBR_DIR . 'vendor/autoload.php';
  */
 function requireFiles() {
 
-    require_once WPBR_DIR . 'includes/controllers.php';
+    require_once WPBR_DIR_INCLUDES . 'controllers.php';
 
-    require_once WPBR_DIR . 'includes/enqueue.php';
+    require_once WPBR_DIR_INCLUDES . 'enqueue.php';
+
+    require_once WPBR_DIR_INCLUDES . 'settings.php';
 
 }
 

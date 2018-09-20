@@ -1,5 +1,3 @@
 /.idea
 /node_modules
 /vendor
-/views/cache
-/assets/js/wpk-core.js

@@ -264,7 +264,7 @@ class Enqueue {
 
         if ( $args[ 'instantEnqueue' ] ) {
 
-            $this->enqueue([$args]);
+            $this->enqueue( [ $args ] );
 
         } else {
 
@@ -290,6 +290,32 @@ class Enqueue {
      * @return void
      */
     public function adminDequeueScripts() {
+
+    }
+
+    /**
+     * Output server variables into site header
+     *
+     * @param array  $vars
+     * @param string $variable
+     *
+     * @return void
+     */
+    public static function outputVars( array $vars, string $variable ) {
+
+        $vars = json_encode( $vars );
+
+        $callback = function () use ( $vars, $variable ) {
+            ?>
+			<script>
+                window[ '<?php echo $variable ?>' ] = <?php echo $vars ?>
+			</script>
+            <?php
+        };
+
+        add_action( 'admin_footer', $callback, 1 );
+        add_action( 'wp_footer', $callback, 1 );
+
 
     }
 

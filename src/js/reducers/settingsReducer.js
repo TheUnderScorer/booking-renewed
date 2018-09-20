@@ -1,18 +1,16 @@
-import { TOGGLE_SNACK_BAR } from '../actions/types';
+import { GET_SETTINGS } from '../actions/types';
 
 const InitialState = {
-    message: '',
-    open:    false,
-    undo:    false,
-    onClick: false,
-    onClose: false,
+    fetched: false,
 };
 
 export default function( state = InitialState, action ) {
 
     switch ( action.type ) {
 
-        case TOGGLE_SNACK_BAR:
+        case GET_SETTINGS:
+
+            action.payload.fetched = true;
 
             return {
                 ...state,
@@ -20,8 +18,9 @@ export default function( state = InitialState, action ) {
             };
 
         default:
+
             return state;
 
     }
 
-};
+}

@@ -70,4 +70,18 @@ class Settings {
         return update_option( $this->slug, $data );
     }
 
+    /**
+     * @param array $data
+     *
+     * @return bool
+     */
+    public function updateData( array $data ) {
+
+        $option = $this->getAll();
+        $data   = array_merge( $option, $data );
+
+        return $this->update( $data );
+
+    }
+
 }

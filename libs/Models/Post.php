@@ -12,6 +12,9 @@ use WPBR\App\Utility;
  */
 class Post extends Entity {
 
+    /** @var string */
+    const POST_TYPE = '';
+
     use Traits\Post\HandleTaxonomy,
         Traits\HandleMetaFields;
 
@@ -243,6 +246,8 @@ class Post extends Entity {
 
         $result = [];
 
+        $this->parseCreationAttributes();
+
         $query = new \WP_Query( $this->attributes );
 
         foreach ( $query->get_posts() as $post ) {
@@ -290,6 +295,10 @@ class Post extends Entity {
 
         if ( ! empty( $this->attributes[ 'author' ] ) ) {
             $this->attributes[ 'post_author' ] = $this->attributes[ 'author' ];
+        }
+
+        if ( ! empty( static::POST_TYPE ) ) {
+            $this->attributes[ 'post_type' ] = static::POST_TYPE;
         }
 
         return $this;

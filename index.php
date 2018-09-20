@@ -31,6 +31,8 @@ function requireFiles() {
 
     require_once WPBR_DIR_INCLUDES . 'settings.php';
 
+    require_once WPBR_DIR_INCLUDES . 'post-types.php';
+
 }
 
 /**

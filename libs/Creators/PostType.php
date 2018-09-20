@@ -1,8 +1,6 @@
 <?php
 
-namespace WPBR\App\Utility;
-
-use WPBR\App\Utility\Logger;
+namespace WPBR\App\Creators;
 
 /**
  * Helper function for creating new post types
@@ -28,6 +26,18 @@ class PostType {
         $this->args = $args;
 
         add_action( 'init', [ $this, 'register' ] );
+    }
+
+    /**
+     * Wrapper for constructor to allow chaining methods instantly
+     *
+     * @param string $slug
+     * @param array  $args
+     *
+     * @return PostType
+     */
+    public static function create( string $slug, array $args = [] ) {
+        return new static( $slug, $args );
     }
 
     /**

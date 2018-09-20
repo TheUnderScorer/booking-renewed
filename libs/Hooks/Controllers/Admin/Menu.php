@@ -5,6 +5,7 @@ namespace WPBR\App\Hooks\Controllers\Admin;
 use function WPBR\App\Core;
 use WPBR\App\Hooks\Controllers\Controller;
 use WPBR\App\Admin\Menu as AdminMenu;
+use WPBR\App\Models\Service;
 use function WPBR\App\response;
 
 /**
@@ -56,6 +57,8 @@ class Menu extends Controller {
 
         $this->loadScripts();
 
+        $servicePostType = Service::POST_TYPE;
+
         $menu->addSubmenu(
             __( 'Settings', 'wpbr' ),
             __( 'Settings', 'wpbr' ),
@@ -64,6 +67,12 @@ class Menu extends Controller {
             function () {
                 echo Core()->view->renderAppContainer( 'wpbr_settings' );
             }
+        )->addSubmenu(
+            __( 'Services', 'wpbr' ),
+            __( 'Services', 'wpbr' ),
+            'edit_posts',
+            "edit.php?post_type=$servicePostType",
+            null
         );
 
     }

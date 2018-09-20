@@ -1,0 +1,33 @@
+@import '../../../../scss/variables';
+
+.wpbr-settings-menu {
+
+	.wpbr-settings-drawer {
+		> div {
+			position: static;
+			float: left;
+			width: 25%;
+			height: 100vh;
+			margin-right: 25px;
+		}
+	}
+
+	.wpbr-appbar {
+		background: $mainBlue;
+	}
+
+	.wpbr-settings-page {
+		background: $white;
+	}
+
+	.wpbr-submit-section {
+		display: flex;
+		flex-direction: column;
+		align-items: flex-end;
+
+		> button {
+			background: $mainBlue;
+		}
+	}
+
+}

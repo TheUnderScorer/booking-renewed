@@ -1,0 +1,15 @@
+$sectionMargin: 10px;
+
+.wpbr-form-section {
+	padding: 10px;
+
+	.wpbr-section-title {
+		margin-bottom: $sectionMargin;
+	}
+
+	.wpbr-section-subtitle {
+		margin-bottom: $sectionMargin;
+		display: inline-block;
+	}
+
+}
